@@ -8,3 +8,4 @@ class Train:
         self.modele = modele
         self.capacite = capacite
         self.numero_train = numero_train
+    
