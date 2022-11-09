@@ -8,7 +8,9 @@ class Game:
         
         pygame.init()
 
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+        #self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+
         pygame.display.set_caption("SNCF Train Game")
         self.clock = pygame.time.Clock()
         self.level = Level()
@@ -88,6 +90,11 @@ class Game:
     # Menu Screen
     def main_menu(self):
         while True:
+            # Main menu FULLSCREEN
+            self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+            w, h = pygame.display.get_surface().get_size()
+            self.background = pygame.transform.scale(self.background, (w, h))
+
             self.screen.blit(self.background, (0, 0))
 
             MENU_MOUSE_POS = pygame.mouse.get_pos()

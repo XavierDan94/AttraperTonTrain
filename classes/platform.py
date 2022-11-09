@@ -1,5 +1,5 @@
-class Platform:
-    platform_number = 0
+import pygame
 
-    def __init__(self):
-        self.platform_number += 1
+class Platform:
+    def __init__(self) -> None:
+        
