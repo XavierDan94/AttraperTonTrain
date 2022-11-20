@@ -7,7 +7,7 @@ class Railway:
         self.railway_number = railway_number # Numéro de la voie
         self.train = train
 
-        self.rectX = 600
+        self.rectX = 900
         self.rectY = rectY
         self.rectWidth = 600
         self.rectHeight = 100

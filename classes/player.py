@@ -13,7 +13,8 @@ class Player(pygame.sprite.Sprite):
         # general setup
         self.image = self.animations[self.status][self.frame_index]        
         self.rect = self.image.get_rect(center = pos)
-        
+        self.z = LAYERS['main']
+
         # movement attributes
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
@@ -76,12 +77,16 @@ class Player(pygame.sprite.Sprite):
             self.direction = self.direction.normalize()
         
         # horizontal movement
-        self.pos.x += self.direction.x * self.speed * dt
-        self.rect.centerx = self.pos.x
+        new_pos_x = self.pos.x + self.direction.x * self.speed * dt
+        if new_pos_x > 20 and new_pos_x < 800:
+            self.pos.x = new_pos_x
+            self.rect.centerx = self.pos.x
 
         # vertical movement
-        self.pos.y += self.direction.y * self.speed * dt
-        self.rect.centery = self.pos.y
+        new_pos_y = self.pos.y + self.direction.y * self.speed * dt
+        if new_pos_y > 20 and new_pos_y < 2000:
+            self.pos.y = new_pos_y
+            self.rect.centery = self.pos.y
 
     def update(self,dt):
         self.input()

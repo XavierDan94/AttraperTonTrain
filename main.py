@@ -8,8 +8,8 @@ class Game:
         
         pygame.init()
 
-        #self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-        self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+        #self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
 
         pygame.display.set_caption("SNCF Train Game")
         self.clock = pygame.time.Clock()
