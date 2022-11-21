@@ -11,6 +11,7 @@ class Level:
     def __init__(self):
         # get the display surface
         self.display_surface = pygame.display.get_surface()
+        
         # sprite groups
         self.all_sprites = CameraGroup()
 
@@ -18,18 +19,15 @@ class Level:
         self.overlay = Overlay(self.player)
 
 
-
-
     def setup(self):
         # railways
-        self.railways = [ Railway(1, None, 0), 
-             Railway(1, None, 300),
-            Railway(1, None, 600),
-            Railway(1, None, 900),
-            Railway(1, None, 1200),
-            Railway(1, None, 1500),
-
-
+        self.railways = [ 
+            Railway(1, None, 0), 
+            Railway(2, None, 300),
+            Railway(3, None, 600),
+            Railway(4, None, 900),
+            Railway(5, None, 1200),
+            Railway(6, None, 1500)
         ]
 
         # Add railways in self.all_sprites
@@ -45,20 +43,34 @@ class Level:
             z = LAYERS['ground'])
 
     def run(self,dt):
+        # level background
         self.display_surface.fill('black')
         
+        # sprites draw and update
         self.all_sprites.custom_draw(self.player)
         self.all_sprites.update(dt)
 
         #self.overlay.display()
 
 class CameraGroup(pygame.sprite.Group):
-    def __init__(self):
+    def __init__(self) -> None:
+        '''
+        Constructeur de la classe CameraGroup\n
+        parametres :\n 
+                    - self
+        '''
         super().__init__()
         self.display_surface = pygame.display.get_surface()
         self.offset = pygame.math.Vector2()
 
     def custom_draw(self, player):
+        '''
+        Affichage personnalisée du joueur pour que la caméra le suit\n
+        parametres :\n
+                    - self
+                    - player (Player) : Joueur
+        '''
+        # Empêche le joueur de se déplacer dans une direction d'un axe selon une position x ou y donnée
         if player.rect.centerx - SCREEN_WIDTH / 2 > 500:
             self.offset.x = player.rect.centerx - SCREEN_WIDTH / 2
         if player.rect.centery - SCREEN_HEIGHT / 2 > 0:

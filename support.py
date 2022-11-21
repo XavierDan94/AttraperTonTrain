@@ -2,6 +2,11 @@ from os import walk
 import pygame
 
 def import_folder(path):
+    '''
+    Importer des fichiers (images)\n
+    parametres :\n 
+                - path : chemin relatif du fichier
+    '''
     surface_list = []
 
     # for folder_name, sub_folder, img_files
