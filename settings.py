@@ -21,7 +21,7 @@ LAYERS = {
 }
 
 # Temps du niveau exprimé en secondes
-TIME_LEVEL = 60*2
+TIME_LEVEL = 60
 
 # Temps de spawn d'un train aléatoire en secondes
 TIME_SPAWNED_TRAIN = 3.0
