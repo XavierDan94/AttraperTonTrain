@@ -70,7 +70,6 @@ class Level:
             surf = pygame.transform.scale(pygame.image.load('graphics/platform/main-platform.png'), (4000,4000)).convert_alpha(),
             groups = self.all_sprites,
             z = LAYERS['ground'])
-
         
     def run(self,dt) -> None:
         '''
@@ -95,7 +94,6 @@ class Level:
                 self.removeTrain(index)
         self.overlay.score = self.score
         self.overlay.display()
-    
 
     def addTrain(self) -> None:
         '''
@@ -144,8 +142,7 @@ class Level:
             self.trains[indexRailway] = -1
             # Mise à jour du score
             self.updateScore(railway)
-
-        
+   
     def preparation_train(self, railwayIndex) -> None:
         '''
         Préparation du train (en cours)\n
@@ -164,12 +161,10 @@ class Level:
                     self.time_pressed_space = 0 # Réinitialisation du temps maintenu de la touche espace
 
                 self.time_pressed_space = self.overlay.timer.getTotalSeconds() - self.start_pressed_space
-                print(self.time_pressed_space)
                 if self.already_pressed_space and self.time_pressed_space >= TIME_PREPARE_TRAIN:
                     self.time_pressed_space = 0 # Réinitialisation du temps maintenu de la touche espace
                     self.configurer_train(railway)
-
-                    
+               
     def configurer_train(self, railway) -> None:
         '''
         Configuration du train\n
