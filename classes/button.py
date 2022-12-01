@@ -3,12 +3,12 @@ class Button():
         '''
         Constructeur de la classe Button\n
         Paramètres:\n
-                    - image
+                    - image (Image): Image associée au bouton
                     - pos (Tuple de 2) : Coordonné x et y du boutton
-                    - texte_input (str) :
-                    - font (Font) : 
-                    - base_color :
-                    - hovering_color :
+                    - texte_input (str) : Texte du bouton
+                    - font (Font) : Font du texte
+                    - base_color (str): Couleur de base du texte (en héxadécimal dans un str)
+                    - hovering_color : Couleur du texte lors du survol (en héxadécimal dans un str)
         '''
         self.image = image
         self.x_pos = pos[0]
