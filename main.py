@@ -2,7 +2,7 @@ import pygame, sys
 from classes.button import Button
 from settings import *
 from level import Level
-
+from classes.timer import *
 class Game: 
     def __init__(self) -> None:
         '''
@@ -13,14 +13,21 @@ class Game:
         pygame.init()
 
         # Taille de l'écran du jeu par défaut
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-        #self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
 
+        # Titre de la fenêtre
         pygame.display.set_caption("SNCF Train Game")
+
+        # Initialisation du temps, et du niveau
         self.clock = pygame.time.Clock()
         self.level = Level()
 
-        self.background = pygame.image.load("assets/Background.png")
+        #self.background = pygame.image.load("assets/Background.png")
+        self.background = pygame.image.load("assets/background_gare.jpg")
+
+        # Initialisation du Timer
+        self.timer = Timer(self.get_font(25), self.screen)
+        self.start_time = pygame.time.get_ticks()
 
     def get_font(self, size): # Returns Press-Start-2P in the desired size
         return pygame.font.Font("assets/font.ttf", size)
@@ -28,9 +35,7 @@ class Game:
     # Play Screen
     def play(self) -> None:
         '''
-        Lancement du jeu (lorsque l'on clique sur "play" dans le menu)\n
-        parametres :\n
-                    - self
+        Lancement du jeu (lorsque l'on clique sur "play" dans le menu)
         '''
         while True:
             PLAY_MOUSE_POS = pygame.mouse.get_pos()
@@ -58,15 +63,19 @@ class Game:
 
             dt = self.clock.tick() / 1000
             self.level.run(dt)
+            
+            # Affichage du score lorsque le temps restant est à 0
+            if self.level.overlay.timer.getTotalSeconds() >= TIME_LEVEL:
+                # Score
+                self.end_level_menu()
+
             pygame.display.update()
 
 
     # Options Screen
-    def options(self):
+    def options(self) -> None:
         '''
-        Affichage de l'écran d'options du menu\n
-        parametres :\n
-                    - self
+        Affichage de l'écran d'options du menu
         '''
         while True:
             w, h = pygame.display.get_surface().get_size()
@@ -108,12 +117,56 @@ class Game:
 
             pygame.display.update()
 
-    # Menu Screen
-    def main_menu(self):
+    # Score Screen
+    def end_level_menu(self) -> None:
         '''
-        Ecran principal (menu)\n
-        parametres :\n
-                    - self
+        Ecran de score
+        '''
+        while True:
+            # Score Screen FULLSCREEN
+            w, h = pygame.display.get_surface().get_size()
+
+            # On applique le background du menu sur l'intégralité de la taille de la fenêtre du jeu
+            self.background = pygame.transform.scale(self.background, (w, h))
+            self.screen.blit(self.background, (0, 0))
+
+            MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+            # Titre de la fenêtre 
+            MENU_TEXT = self.get_font(100).render("YOUR IS SCORE : "+str(self.level.score), True, "#b68f40")
+            MENU_RECT = MENU_TEXT.get_rect(center=(w/2, 300))
+
+            # Chargement des boutons présents
+            RETRY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(w/2, 500), 
+                                text_input="RETRY", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
+
+            QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(w/2, 800), 
+                                text_input="QUIT", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
+
+            self.screen.blit(MENU_TEXT, MENU_RECT)
+            
+            # Pour chaque bouton, on modifie son hover
+            for button in [RETRY_BUTTON, QUIT_BUTTON]:
+                button.changeColor(MENU_MOUSE_POS)
+                button.update(self.screen)
+            
+            # Gestion des événements relatifs au menu
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if RETRY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        self.level = Level()
+                        self.play()
+
+                    if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        pygame.quit()
+                        sys.exit()
+
+            pygame.display.update()
+
+    # Menu Screen
+    def main_menu(self) -> None:
+        '''
+        Ecran principal (menu)
         '''
         while True:
             # Main menu FULLSCREEN

@@ -2,37 +2,42 @@ import pygame
 from settings import *
 
 class Generic(pygame.sprite.Sprite):
-	def __init__(self, pos, surf, groups, z = LAYERS['main']):
-		super().__init__(groups)
-		self.image = surf
-		self.rect = self.image.get_rect(topleft = pos)
-		self.z = z
-		self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.2, -self.rect.height * 0.75)
-
-
-class Water(Generic):
-	def __init__(self, pos, frames, groups):
-
-		#animation setup
-		self.frames = frames
-		self.frame_index = 0
-
-		# sprite setup
-		super().__init__(
-				pos = pos, 
-				surf = self.frames[self.frame_index], 
-				groups = groups, 
-				z = LAYERS['water']) 
-
-	def animate(self,dt):
-		self.frame_index += 5 * dt
-		if self.frame_index >= len(self.frames):
-			self.frame_index = 0
-		self.image = self.frames[int(self.frame_index)]
-
-	def update(self,dt):
-		self.animate(dt)
+    def __init__(self, pos, surf, groups, z = LAYERS['main']):
+        '''
+        Constructeur de la classe Generic\n
+        Paramètres:\n
+                    - pos : Position x et y 
+                    - surf : Image relié à l objet (deviendra rect)
+                    - groups 
+        '''
+        super().__init__(groups)
+        self.image = surf
+        self.rect = self.image.get_rect(topleft = pos)
+        self.z = z
+        rect = self.rect
+        self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.2, -self.rect.height * 0.75)
 
 class Generic_Railway(Generic):
-	def __init__(self, pos, surf, groups, name):
-		super().__init__(pos, surf, groups, z = 2) 
+    '''
+    Constructeur d'une voie Railway
+    '''
+    def __init__(self, pos, surf, groups, name):
+        super().__init__(pos, surf, groups) 
+        
+class Generic_Train(Generic):
+    '''
+    Constructeur d'un train Train
+    '''
+    def __init__(self, pos, surf, groups, heure_depart):
+        self.heure_depart = heure_depart
+        super().__init__((pos[0]+50, pos[1]-180), surf, groups, z= 6) 
+
+class Generic_Box(Generic):
+    '''
+    Constructeur d'un préparateur de train (computer) Box
+    '''
+    def __init__(self, pos, surf, groups, railway_number):
+        super().__init__((pos[0]-250, pos[1]+100), surf, groups, z= 6) 
+        
+        self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.1,-self.rect.height * 0.1)
+        self.railway_number = railway_number
